@@ -1,0 +1,28 @@
+stages:
+  - scanning
+  - app_build
+  - pre_test
+  - container_build
+  - deploy
+  - testing
+  - deploy_prod
+  - release
+
+variables:
+  HELM_PROJECT_NAME: "ms-denuncio"
+  HELM_NAMESPACE: "siniestros"
+  OPTIONS_HELM: "--timeout 20m"
+  NEEDS_UNIT_TESTING: "no"
+  IMAGE_BUILD: "registry.gitlab.com/bice_vida/shared/golden-images/graalvm_for_jdk17:latest"
+
+
+#-------------------------------
+# INCLUDES
+#-------------------------------
+include:
+  - project: BICE_Vida/shared/pipelines
+    ref: master
+    file: /pipeline-eks/quarkus_eddieflow.yml
+  - project: BICE_Vida/shared/pipelines
+    ref: master
+    file: /pipeline-checkmarx/checkmarx.yml
